@@ -17,12 +17,13 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(response.profileObj));
 
       // Destructure properties from Google Response
-      const { name, googleId, imageUrl } = response.profileObj;
+      const { name, email, googleId, imageUrl } = response.profileObj;
 
       // Define User Document
       const doc = {
         _id: googleId,
         _type: "user",
+        email: email,
         userName: name,
         image: imageUrl,
       };
@@ -31,7 +32,7 @@ const Login = () => {
       const result = await client.createIfNotExists(doc);
       if (result) navigate("/", { replace: true });
     }
-    
+
   };
   return (
     <div className="flex justify-start items-center flex-col h-screen">

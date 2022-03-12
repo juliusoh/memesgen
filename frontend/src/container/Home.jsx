@@ -21,12 +21,19 @@ const Home = () => {
       : localStorage.clear();
 
   useEffect(() => {
-    const query = userQuery(userInfo?.googleId);
-    client.fetch(query).then((data) => {
-      setUser(data[0]);
-    });
-    console.log(user, "user");
+    async function fetchData() {
+      try {
+        const query = userQuery(userInfo.googleId);
+        const result = await client.fetch(query);
+        setUser(result[0])
+      } catch (error) {
+        console.log("error", error)
+      }
+    }
+    fetchData();
   }, []);
+
+  console.log(user, "user");
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0);
@@ -36,7 +43,7 @@ const Home = () => {
     // md: for medium devices
     <div className="flex bg-gray-50 md:flex-row flex-col h-screen transition-height duration-75 ease-out">
       <div className="hidden md:flex h-screen flex-initial">
-        <Sidebar user={user && user} closeToggle={setToggleSideBar} />
+        <Sidebar user={user} />
       </div>
       <div className="flex md:hidden flex-row">
         <div className="p-2 w-full flex flex-row justify-between items-center shadow-md">
@@ -51,7 +58,7 @@ const Home = () => {
             <img src={logo} alt="logo" className="w-28" />
           </Link>
           <Link to={`user-profile/${user?._id}`}>
-            <img src={user?.image || ''} alt="" className="w-28 rounded-md" />
+            <img src={user?.image || ""} alt="" className="w-28 rounded-md" />
           </Link>
         </div>
         {toggleSideBar && (
@@ -63,14 +70,14 @@ const Home = () => {
                 onClick={() => setToggleSideBar(false)}
               />
             </div>
-            <Sidebar user={user && user} closeToggle={setToggleSideBar} />
+            <Sidebar user={user} closeToggle={setToggleSideBar} />
           </div>
         )}
       </div>
       <div className="pb-2 flex-1 h-screen overflow-y-scroll" ref={scrollRef}>
         <Routes>
           <Route path="/user-profile/:userId" element={<UserProfile />} />
-          <Route path="/*" element={<Pins user={user && user} />} />
+          <Route path="/*" element={<Pins user={user} />} />
         </Routes>
       </div>
     </div>
