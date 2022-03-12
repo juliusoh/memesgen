@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import FilerobotImageEditor from 'filerobot-image-editor';
+import FilerobotImageEditor from "filerobot-image-editor";
 import { client } from "../client";
 import Spinner from "./Spinner";
 // import list of categories [{ name: 'sports', image }]
@@ -21,6 +21,25 @@ const CreatePin = ({ user }) => {
 
   const navigate = useNavigate();
 
+  const uploadImage = async (e) => {
+    console.log(e.target.files, "HEHEH");
+    const { type, name } = e.target.files[0];
+
+    if (type === "image/png" || type === "image/svg" || type === "image/jpeg" || type === "image/gif" || type === "image/tiff") {
+      setWrongImageType(false);
+      setLoading(true);
+      try {
+        const imageUpload = await client.assets.upload("image", e.target.files[0], { contentType: type, fileName: name });
+        setImageAsset(imageUpload);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      setWrongImageType(true);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
       {fields && <p className="text-red-500 mb-5 text-xl transition-all duration-150 ease-in"></p>}
@@ -38,13 +57,21 @@ const CreatePin = ({ user }) => {
                     </p>
                     <p className="text-lg">Click to Upload</p>
                   </div>
-                  <p className="mt-32 text-gray-400">
-                    Recommendation: Use High-Quality JPG, SVG, PNG, GIF or TIFF less than 20 MB
-                  </p>
+                  <p className="mt-32 text-gray-400">Use High-Quality JPG, SVG, PNG, GIF less than 20 MB</p>
                 </div>
+                <input type="file" name="upload-image" onChange={(e) => uploadImage(e)} className="w-0 h-0" />
               </label>
             ) : (
-              <p>Something Else</p>
+              <div className="relative h-full">
+                <img src={imageAsset?.url} alt="uploaded-pic" className="h-full w-full" />
+                <button
+                  type="button"
+                  className="absolute bottom-3 right-3 p-3 rounded-full bg-white text-xl cursor-pointer outline-none hover:shadow-md transition-all duration-500 ease-in-out"
+                  onClick={() => setImageAsset(null)}
+                >
+                  <MdDelete />
+                </button>
+              </div>
             )}
           </div>
         </div>
