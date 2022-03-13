@@ -6,7 +6,8 @@ import { Link, Route, Routes } from "react-router-dom";
 import Sidebar from "../components/SideBar";
 import UserProfile from "../components/UserProfile";
 import { client } from "../client";
-import logo from "../assets/SADA-LOGO.png";
+// import logo from "../assets/SADA-LOGO.png";
+import logo from "../assets/anthos.png";
 import Pins from "./Pins";
 import { userQuery } from "../utils/data";
 import { fetchUser } from "../utils/fetchUser";
@@ -55,7 +56,7 @@ const Home = () => {
             <img src={logo} alt="logo" className="w-28" />
           </Link>
           <Link to={`user-profile/${user?._id}`}>
-            <img src={user?.image || ""} alt="" className="w-28 rounded-md" />
+            <img src={user?.image || ""} alt="" className="w-14 rounded-md" />
           </Link>
         </div>
         {toggleSideBar && (

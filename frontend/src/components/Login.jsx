@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import shareVideo from "../assets/share.mp4";
 import logo from "../assets/SADA-LOGO.png";
+import anthos from '../assets/anthos.png'
 
 import { client } from "../client";
 
@@ -47,10 +48,13 @@ const Login = () => {
           className="w-full h-full object-cover"
         />
         <div className="absolute flex flex-col justify-center items-center top-0 right-0 left-0 bottom-0 bg-blackOverlay">
-          <div className="p-3 bg-mainColor mb-2 ">
-            <img src={logo} width="130px" alt="logo" />
+          <div className="p-3 bg-mainColor mb-2 rounded-lg ">
+            <img src={anthos} width="400px" alt="logo" />
           </div>
-
+          {/* <div className="p-3 bg-mainColor mb-2 ">
+            <img src={logo} width="130px" alt="logo" />
+          </div> */}
+          <p className="text-white font-bold mb-2">Powered by Anthos and SADA</p>
           <div className="shadow-2xl">
             <GoogleLogin
               clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
