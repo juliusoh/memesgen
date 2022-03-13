@@ -30,7 +30,9 @@ const CreatePin = ({ user }) => {
       setLoading(true);
       try {
         const imageUpload = await client.assets.upload("image", e.target.files[0], { contentType: type, fileName: name });
-        setImageAsset(imageUpload);
+        const tempImage = URL.createObjectURL(e.target.files[0])
+        console.log(tempImage, 'hahaha')
+        setImageAsset(tempImage);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -107,7 +109,7 @@ const CreatePin = ({ user }) => {
             ) : (
               <div className="relative h-full">
                 <img
-                  src={imageAsset?.url}
+                  src={imageAsset}
                   onClick={() => {
                     toggle(true);
                   }}
@@ -127,11 +129,13 @@ const CreatePin = ({ user }) => {
         </div>
         <FilerobotImageEditor
           show={show}
-          src={imageAsset?.url}
+          src={imageAsset}
           onClose={() => {
             toggle(false);
           }}
-          config={config}
+          onComplete={(url, file) => {
+            console.log(url, 'url', file, 'file')
+          }}
         />
       </div>
       <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
