@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import FilerobotImageEditor from "filerobot-image-editor";
+// import FilerobotImageEditor from "filerobot-image-editor";
 import { client } from "../client";
 import Spinner from "./Spinner";
 // import list of categories [{ name: 'sports', image }]
+import FilerobotImageEditor, { TABS, TOOLS } from 'react-filerobot-image-editor';
 import { categories } from "../utils/data";
 
 const CreatePin = ({ user }) => {
@@ -20,6 +21,12 @@ const CreatePin = ({ user }) => {
   const [show, toggle] = useState(false);
 
   const navigate = useNavigate();
+
+  const [isImgEditorShown, setIsImgEditorShown] = useState(false);
+
+  const closeImgEditor = () => {
+    toggle(false)
+  };
 
   const uploadImage = async (e) => {
     console.log(e.target.files, "HEHEH");
@@ -43,12 +50,12 @@ const CreatePin = ({ user }) => {
   };
 
   const saveMeme = async () => {
-    if (title && about && destination && imageAsset?._id && category) {
+    if (title && about && imageAsset?._id && category) {
       const doc = {
         _type: "pin",
         title,
         about,
-        destination,
+        // destination,
         image: {
           _type: "image",
           asset: {
@@ -78,17 +85,11 @@ const CreatePin = ({ user }) => {
     }
   };
 
-  const config = {
-    filerobot: {
-      uploadKey :'bf72d18393ea40d5b4fccd9fb83806fa',
-      container: 'fpdlhfjm'
-    }
-  }
 
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
       {fields && <p className="text-red-500 mb-5 text-xl transition-all duration-150 ease-in">Please fill in all the fields.</p>}
-      <div className="flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p- lg:w-4/5 w-full">
+      <div className="flex lg:flex-row flex-col justify-center items-center bg-white xl:p-5 p-3 xl:w-4/5 w-full">
         <div className="bg-secondaryColor p-3 flex flex-0.7 w-full">
           <div className="flex justify-center items-center flex-col border-2 border-dotted border-gray-300 p-3 w-full h-420">
             {loading && <Spinner />}
@@ -107,18 +108,18 @@ const CreatePin = ({ user }) => {
                 <input type="file" name="upload-image" onChange={(e) => uploadImage(e)} className="w-0 h-0" />
               </label>
             ) : (
-              <div className="relative h-full">
+              <div className="relative w-full">
                 <img
                   src={imageAsset}
                   onClick={() => {
                     toggle(true);
                   }}
                   alt="uploaded-pic"
-                  className="h-full w-full"
+                  className="w-full h-full"
                 />
                 <button
                   type="button"
-                  className="absolute bottom-3 right-3 p-3 rounded-full bg-white text-xl cursor-pointer outline-none hover:shadow-md transition-all duration-500 ease-in-out"
+                  className="absolute bottom-3 right-3 p-3 rounded-full bg-red-500 text-xl cursor-pointer outline-none hover:shadow-md transition-all duration-500 ease-in-out"
                   onClick={() => setImageAsset(null)}
                 >
                   <MdDelete />
@@ -127,16 +128,63 @@ const CreatePin = ({ user }) => {
             )}
           </div>
         </div>
-        <FilerobotImageEditor
+        {/* <FilerobotImageEditor
           show={show}
+          onSave={(editedImageObject, designState) => console.log('saved', editedImageObject, designState)}
           src={imageAsset}
           onClose={() => {
             toggle(false);
           }}
-          onComplete={(url, file) => {
-            console.log(url, 'url', file, 'file')
-          }}
+          config={config}
+          onComplete={(props) => { setImageAsset(props) }}
+          onBeforeComplete={(props) => { console.log(props); return false; }}
+        /> */}
+        <div>
+      {/* <button onClick={openImgEditor}>Open Filerobot image editor</button> */}
+      {show && (
+        <FilerobotImageEditor
+	  source={imageAsset}
+	  onSave={(editedImageObject, designState) => console.log('saved', editedImageObject, designState)}
+	  onClose={closeImgEditor}
+	  annotationsCommon={{
+	    fill: '#ff0000'
+	  }}
+	  Text={{ text: 'Filerobot...' }}
+    Crop={{
+      presetsItems: [
+      ],
+      presetsFolders: [
+        {
+          titleKey: 'socialMedia', // will be translated into Social Media as backend contains this translation key
+          // icon: Social, // optional, Social is a React component. Possible (React component, string or HTML Element)
+          groups: [
+            {
+              titleKey: 'facebook',
+              items: [
+                {
+                  titleKey: 'profile',
+                  width: 180,
+                  height: 180,
+                  descriptionKey: 'fbProfileSize',
+                },
+                {
+                  titleKey: 'coverPhoto',
+                  width: 820,
+                  height: 312,
+                  descriptionKey: 'fbCoverPhotoSize',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }}
+	  tabsIds={[TABS.ADJUST, TABS.ANNOTATE, TABS.WATERMARK]} // or {['Adjust', 'Annotate', 'Watermark']}
+	  defaultTabId={TABS.ANNOTATE} // or 'Annotate'
+	  defaultToolId={TOOLS.TEXT} // or 'Text'
         />
+      )}
+    </div>
       </div>
       <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
         <input

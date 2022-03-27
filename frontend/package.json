@@ -11,6 +11,7 @@
     "filerobot-image-editor": "^3.12.17",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-filerobot-image-editor": "^4.0.0",
     "react-google-login": "^5.2.2",
     "react-icons": "^4.3.1",
     "react-loader-spinner": "^5.1.0",
