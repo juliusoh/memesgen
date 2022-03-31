@@ -4,19 +4,12 @@ import { RiHomeFill } from "react-icons/ri";
 import { IoIosArrowForward } from "react-icons/io";
 
 import logo from "../assets/anthos.png";
+import { categories } from "../utils/data";
 
 const isNotActiveStyle =
   "flex items-center px-5 gap-3 text-gray-500 hover:text-black transition-all duration-200 ease-in-out capitalize";
 const isActiveStyle =
   "flex items-center px-5 gap-3 font-extrabold border-r-2 border-black transition-all duration-200 ease-in-out capitalize";
-
-const categories = [
-  { name: "GCP" },
-  { name: "AWS" },
-  { name: "Azure" },
-  { name: "SADA" },
-  { name: "Other" },
-];
 
 const SideBar = ({ user, closeToggle }) => {
   const handleCloseSideBar = () => {
@@ -42,14 +35,15 @@ const SideBar = ({ user, closeToggle }) => {
             <RiHomeFill />
             Home
           </NavLink>
-          <h3 className="mt-2 px-5 text-base 2xl:text-xl">Discover Categories</h3>
-          {categories.slice(0, categories.length - 1).map((category) => (
+          <h3 className="mt-2 px-5 text-base font-bold 2xl:text-xl">Discover Categories</h3>
+          {categories.slice(0, categories.length).map((category) => (
             <NavLink
               to={`/category/${category.name}`}
               className={({ isActive }) => (isActive ? isActiveStyle : isNotActiveStyle)}
               onClick={handleCloseSideBar}
               key={category.name}
             >
+              <img src={category.image} className="w-8 h-8 rounded-full shadow-sm" alt="category" />
               {category.name}
             </NavLink>
           ))}

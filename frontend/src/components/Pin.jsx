@@ -43,8 +43,9 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
 
   const deletePin = async (_id) => {
     try {
-      await client.delete(_id);
-      window.location.reload();
+      const result = await client.delete(_id);
+      console.log(result, "result");
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }

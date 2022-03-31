@@ -11,7 +11,7 @@ import { client } from "../client";
 const Login = () => {
   const navigate = useNavigate();
   const responseGoogle = async (response) => {
-    console.log(response, "hey");
+    console.log(response, "Google Oauth Response");
 
     if (response.profileObj) {
       // Set user to local storage
