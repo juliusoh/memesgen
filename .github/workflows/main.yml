@@ -24,7 +24,7 @@ jobs:
     - name: bundle
       working-directory: ./frontend
       run: |
-        npm ci
+        npm i
         npm run build
 
     - name: authenticate gcp
