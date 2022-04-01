@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      annotations:
+          checksum/env-vars: {{ include (print $.Template.BasePath "/env-vars-secret.yaml") . | sha256sum }}
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}
+          image: {{print "us.gcr.io/" .Values.project "/" .Release.Name ":" .Values.image.tag }}
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          envFrom:
+          - secretRef:
+              name: env-vars
+          ports:
+          - containerPort: {{ .Values.image.port }}
+            name: http
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.image.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.image.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 5

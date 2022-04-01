@@ -1,0 +1,52 @@
+name: memesgen-react-client
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+env:
+  GCP_PROJECT: memesgen
+  GCP_LOCATION: us-west1
+  GCP_CLUSTER: memesgen
+
+jobs:
+  build-and-deploy:
+    name: bundle
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      working-directory: ./frontend
+      run: |
+        npm ci
+        npm run build
+
+    - name: build
+      uses: 'docker:latest'
+      working-directory: ./frontend
+      run: |
+        docker login -u _json_key --password-stdin https://us.gcr.io < $GCP_CI_SERVICE_KEY
+        docker build -t $CI_PROJECT_NAME .
+        docker tag $CI_PROJECT_NAME "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME"
+        docker tag $CI_PROJECT_NAME "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA"
+        docker push "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME" --all-tags
+
+    - name: authenticate
+      working-directory: ./frontend
+      uses: 'google-github-actions/auth@v0'
+      run: |
+        gcloud auth activate-service-account --key-file $GCP_CI_SERVICE_KEY
+        export KUBECONFIG=kube.conf && gcloud container clusters get-credentials $GCP_CLUSTER --zone $GCP_LOCATION --project $GCP_PROJECT
+        kubectl get pods
+
+    - name: deploy
+      working-directory: ./frontend
+      uses: 'alpine/helm:latest'
+      run: |
+        export KUBECONFIG=kube.conf
+        helm upgrade --install $CI_PROJECT_NAME .infra \
+        --namespace development \
+        --create-namespace \
+        --set image.tag=$CI_COMMIT_SHORT_SHA
