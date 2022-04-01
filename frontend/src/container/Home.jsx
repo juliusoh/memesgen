@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { HiMenu } from "react-icons/hi";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
 import Sidebar from "../components/SideBar";
 import UserProfile from "../components/UserProfile";
@@ -16,14 +16,17 @@ const Home = () => {
   const [toggleSideBar, setToggleSideBar] = useState(true);
   const [user, setUser] = useState(null);
   const scrollRef = useRef(null);
-
+  const navigate = useNavigate();
   const userInfo = fetchUser()
   useEffect(() => {
     async function fetchData() {
       try {
+        if (!userInfo) navigate("/login", {replace: true})
+        console.log(user, "user");
         const query = userQuery(userInfo.googleId);
         const result = await client.fetch(query);
         setUser(result[0])
+
       } catch (error) {
         console.log("error", error)
       }
@@ -31,7 +34,9 @@ const Home = () => {
     fetchData();
   }, []);
 
-  console.log(user, "user");
+
+
+
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0);
