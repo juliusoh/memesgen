@@ -48,7 +48,6 @@ jobs:
 
     - name: deploy
       working-directory: ./frontend
-      uses: 'alpine/helm:latest'
       run: |
         export KUBECONFIG=kube.conf
         helm upgrade --install $CI_PROJECT_NAME .infra \
