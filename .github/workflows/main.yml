@@ -26,10 +26,14 @@ jobs:
     #     npm ci
     #     npm run build
 
+    - name: authenticate gcp
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: ${{ secrets.GCP_CI_SERVICE_KEY }}
+
     - name: build
       working-directory: ./frontend
       run: |
-        docker login -u _json_key --password-stdin https://us.gcr.io < $GCP_CI_SERVICE_KEY
         docker build -t $CI_PROJECT_NAME .
         docker tag $CI_PROJECT_NAME "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME"
         docker tag $CI_PROJECT_NAME "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA"
