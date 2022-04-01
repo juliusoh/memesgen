@@ -20,11 +20,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: bundle
-      working-directory: ./frontend
-      run: |
-        npm ci
-        npm run build
+    # - name: bundle
+    #   working-directory: ./frontend
+    #   run: |
+    #     npm ci
+    #     npm run build
 
     - name: build
       working-directory: ./frontend
