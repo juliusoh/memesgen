@@ -42,11 +42,6 @@ jobs:
         docker tag $CI_PROJECT_NAME "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME:$GITHUB_SHA"
         docker push "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME" --all-tags
 
-    - name: authenticate gcp
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: ${{ secrets.GCP_CI_SERVICE_KEY }}
-
     - name: authenticate
       run: |
         export KUBECONFIG=kube.conf && gcloud container clusters get-credentials $GCP_CLUSTER --zone $GCP_LOCATION --project $GCP_PROJECT
