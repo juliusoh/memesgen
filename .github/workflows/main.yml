@@ -36,6 +36,8 @@ jobs:
     - name: build
       working-directory: ./frontend
       run: |
+        gcloud auth activate-service-account --key-file $GCP_CI_SERVICE_KEY
+        gcloud auth configure-docker
         docker build -t $CI_PROJECT_NAME .
         docker tag $CI_PROJECT_NAME "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME"
         docker tag $CI_PROJECT_NAME "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME:$GITHUB_SHA"
@@ -49,6 +51,7 @@ jobs:
     - name: authenticate
       run: |
         gcloud auth activate-service-account --key-file $GCP_CI_SERVICE_KEY
+        gcloud auth configure-docker
         export KUBECONFIG=kube.conf && gcloud container clusters get-credentials $GCP_CLUSTER --zone $GCP_LOCATION --project $GCP_PROJECT
         kubectl get pods
 
