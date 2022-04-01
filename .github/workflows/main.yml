@@ -59,4 +59,4 @@ jobs:
         helm upgrade --install $CI_PROJECT_NAME .infra \
         --namespace development \
         --create-namespace \
-        --set image.tag=$CI_COMMIT_SHORT_SHA
+        --set image.tag=$GITHUB_SHA
