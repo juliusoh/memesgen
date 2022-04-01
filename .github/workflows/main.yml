@@ -10,6 +10,7 @@ env:
   GCP_PROJECT: memesgen
   GCP_LOCATION: us-west1
   GCP_CLUSTER: memesgen
+  GCP_CI_SERVICE_KEY: ${{ secrets.GCP_CI_SERVICE_KEY }}
 
 jobs:
   build-and-deploy:
@@ -18,13 +19,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+
+    - name: bundle
       working-directory: ./frontend
       run: |
         npm ci
         npm run build
 
     - name: build
-      uses: 'docker:latest'
       working-directory: ./frontend
       run: |
         docker login -u _json_key --password-stdin https://us.gcr.io < $GCP_CI_SERVICE_KEY
@@ -33,9 +35,12 @@ jobs:
         docker tag $CI_PROJECT_NAME "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA"
         docker push "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME" --all-tags
 
-    - name: authenticate
-      working-directory: ./frontend
+    - name: authenticate gcp
       uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: ${{ secrets.GCP_CI_SERVICE_KEY }}
+
+    - name: authenticate
       run: |
         gcloud auth activate-service-account --key-file $GCP_CI_SERVICE_KEY
         export KUBECONFIG=kube.conf && gcloud container clusters get-credentials $GCP_CLUSTER --zone $GCP_LOCATION --project $GCP_PROJECT
