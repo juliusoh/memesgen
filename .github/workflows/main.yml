@@ -24,6 +24,7 @@ jobs:
     - name: bundle
       working-directory: ./frontend
       run: |
+        unset CI
         npm i
         npm run build
 
