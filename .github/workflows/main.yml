@@ -50,7 +50,7 @@ jobs:
     - name: deploy
       working-directory: ./frontend
       run: |
-        export KUBECONFIG=kube.conf
+        export KUBECONFIG=kube.conf &&
         helm upgrade --install $CI_PROJECT_NAME .infra \
         --namespace development \
         --create-namespace \
