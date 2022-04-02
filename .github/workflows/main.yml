@@ -36,9 +36,9 @@ jobs:
     - name: make envfile
       uses: SpicyPizza/create-envfile@v1.3
       with:
-        REACT_APP_GOOGLE_API_TOKEN: ${{ secrets.REACT_APP_GOOGLE_API_TOKEN}}
-        REACT_APP_SANITY_PROJECT_ID: ${{ secrets.REACT_APP_SANITY_PROJECT_ID }}
-        REACT_APP_SANITY_TOKEN: ${{ secrets.REACT_APP_SANITY_TOKEN }}
+        envkey_REACT_APP_GOOGLE_API_TOKEN: ${{ secrets.REACT_APP_GOOGLE_API_TOKEN}}
+        envkey_REACT_APP_SANITY_PROJECT_ID: ${{ secrets.REACT_APP_SANITY_PROJECT_ID }}
+        envkey_REACT_APP_SANITY_TOKEN: ${{ secrets.REACT_APP_SANITY_TOKEN }}
         directory: ./frontend
         file_name: .env
 
