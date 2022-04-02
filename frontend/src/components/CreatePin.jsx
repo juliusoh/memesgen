@@ -67,7 +67,7 @@ const CreatePin = ({ user }) => {
     const { type, name } = e.target.files[0];
     setEditBtn(true);
     setShowCurrentImg(true);
-    if (type === "image/png" || type === "image/svg" || type === "image/jpeg" || type === "image/gif" || type === "image/tiff") {
+    if (type === "image/png" || type === "image/svg" || type === "image/jpeg" || type === "image/gif" || type === "image/tiff" || type === "image/webp") {
       setNoEditImage(e.target.files[0]);
       setWrongImageType(false);
       setLoading(true);

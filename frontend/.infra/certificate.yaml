@@ -6,6 +6,7 @@ metadata:
 spec:
   dnsNames:
     - juliusoh.tech
+    - dev.juliusoh.tech
   secretName: react-client-certificate
   issuerRef:
     name: letsencrypt-cluster-issuer
