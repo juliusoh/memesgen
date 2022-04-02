@@ -45,8 +45,8 @@ jobs:
     - name: authenticate
       working-directory: ./frontend
       run: |
-        export KUBECONFIG=kube.conf && gcloud container clusters get-credentials $GCP_CLUSTER --zone $GCP_LOCATION --project $GCP_PROJECT
-        kubectl get pods
+        export KUBECONFIG=kube.conf && gcloud container clusters get-credentials $GCP_CLUSTER --zone $GCP_LOCATION --project $GCP_PROJECT &&
+        kubectl get pods &&
         helm upgrade --install $CI_PROJECT_NAME .infra \
         --namespace development \
         --create-namespace \
