@@ -21,6 +21,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: make envfile
+      uses: SpicyPizza/create-envfile@v1.3
+      with:
+        envkey_REACT_APP_GOOGLE_API_TOKEN: ${{ secrets.REACT_APP_GOOGLE_API_TOKEN}}
+        envkey_REACT_APP_SANITY_PROJECT_ID: ${{ secrets.REACT_APP_SANITY_PROJECT_ID }}
+        envkey_REACT_APP_SANITY_TOKEN: ${{ secrets.REACT_APP_SANITY_TOKEN }}
+        directory: ./frontend
+        file_name: .env
+
     - name: bundle
       working-directory: ./frontend
       run: |
@@ -32,15 +41,6 @@ jobs:
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: ${{ secrets.GCP_CI_SERVICE_KEY }}
-
-    - name: make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_REACT_APP_GOOGLE_API_TOKEN: ${{ secrets.REACT_APP_GOOGLE_API_TOKEN}}
-        envkey_REACT_APP_SANITY_PROJECT_ID: ${{ secrets.REACT_APP_SANITY_PROJECT_ID }}
-        envkey_REACT_APP_SANITY_TOKEN: ${{ secrets.REACT_APP_SANITY_TOKEN }}
-        directory: ./frontend
-        file_name: .env
 
     - name: build
       working-directory: ./frontend
