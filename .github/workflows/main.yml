@@ -33,6 +33,13 @@ jobs:
       with:
         credentials_json: ${{ secrets.GCP_CI_SERVICE_KEY }}
 
+    - name: make envfile
+      uses: SpicyPizza/create-envfile@v1.3
+      with:
+        REACT_APP_GOOGLE_API_TOKEN: ${{ secrets.REACT_APP_GOOGLE_API_TOKEN}}
+        REACT_APP_SANITY_PROJECT_ID: ${{ secrets.REACT_APP_SANITY_PROJECT_ID }}
+        REACT_APP_SANITY_TOKEN: ${{ secrets.REACT_APP_SANITY_TOKEN }}
+
     - name: build
       working-directory: ./frontend
       run: |
