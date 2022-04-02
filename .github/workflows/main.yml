@@ -8,7 +8,7 @@ on:
 
 env:
   GCP_PROJECT: memesgen
-  CI_PROJECT_NAME: memesgen
+  CI_PROJECT_NAME: react-app
   GCP_LOCATION: us-west1
   GCP_CLUSTER: memesgen
   GCP_CI_SERVICE_KEY: ${{ secrets.GCP_CI_SERVICE_KEY }}
@@ -46,11 +46,14 @@ jobs:
       run: |
         export KUBECONFIG=kube.conf && gcloud container clusters get-credentials $GCP_CLUSTER --zone $GCP_LOCATION --project $GCP_PROJECT
         kubectl get pods
-
-    - name: deploy
-      working-directory: ./frontend
-      run: |
-        export KUBECONFIG=kube.conf && helm upgrade --install $CI_PROJECT_NAME .infra \
+        helm upgrade --install $CI_PROJECT_NAME .infra \
         --namespace development \
         --create-namespace \
         --set image.tag=$GITHUB_SHA
+    # - name: deploy
+    #   working-directory: ./frontend
+    #   run: |
+    #     export KUBECONFIG=kube.conf && helm upgrade --install $CI_PROJECT_NAME .infra \
+    #     --namespace development \
+    #     --create-namespace \
+    #     --set image.tag=$GITHUB_SHA
