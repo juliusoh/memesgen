@@ -1,6 +1,6 @@
 project: memesgen
 ingress:
-  host: juliusoh.tech
+  host: dev.juliusoh.tech
 image:
   tag: latest
   port: 3000
