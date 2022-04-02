@@ -43,6 +43,7 @@ jobs:
         docker push "us.gcr.io/$GCP_PROJECT/$CI_PROJECT_NAME" --all-tags
 
     - name: authenticate
+      working-directory: ./frontend
       run: |
         export KUBECONFIG=kube.conf && gcloud container clusters get-credentials $GCP_CLUSTER --zone $GCP_LOCATION --project $GCP_PROJECT
         kubectl get pods
