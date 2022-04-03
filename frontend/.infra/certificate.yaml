@@ -1,12 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: react-client-certificate
+  name: memesgen-certificate
   namespace: development
 spec:
   dnsNames:
     - dev.juliusoh.tech
-  secretName: react-client-certificate
+  secretName: memesgen-certificate
   issuerRef:
     name: letsencrypt-cluster-issuer
     kind: ClusterIssuer

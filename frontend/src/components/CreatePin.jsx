@@ -91,6 +91,8 @@ const CreatePin = ({ user }) => {
       .upload("image", noEditImage, { contentType: noEditImage.type, fileName: noEditImage.name })
       .then((document) => {
         setNoEditImage(document);
+        console.log('noEditUpload', noEditImage)
+        setImageAsset(document)
       })
       .catch((error) => {
         console.log(error.message);
