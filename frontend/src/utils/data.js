@@ -9,7 +9,7 @@ export const categories = [
     image: haha,
   },
   { name: "SADA", image: logo },
-  { name: "ROFL", image: warning },
+  // { name: "Not General", image: warning },
   // { name: "SADA", image: "https://1ur3xe414uvf2og9a21jjaaq-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/SADA_logo_rgb01.png" },
 ];
 

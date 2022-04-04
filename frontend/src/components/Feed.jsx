@@ -12,7 +12,7 @@ const Feed = () => {
   const { categoryId } = useParams()
 
   useEffect(() => {
-    async function fetchData() {
+    (async function fetchData() {
       try {
         setLoading(true);
         if(categoryId) {
@@ -28,8 +28,7 @@ const Feed = () => {
       } catch (error) {
         console.log("Error", error)
       }
-    }
-    fetchData();
+    })()
   }, [categoryId])
 
   console.log(pins, 'PINS')
