@@ -86,12 +86,15 @@ const CreatePin = ({ user }) => {
   };
 
   const noEditUpload = async () => {
+    setDontShow(false)
+    setLoading(true)
     console.log("imageAsset", imageAsset);
     await client.assets
       .upload("image", noEditImage, { contentType: noEditImage.type, fileName: noEditImage.name })
       .then((document) => {
         setNoEditImage(document);
         console.log('noEditUpload', noEditImage)
+        setLoading(false)
         setImageAsset(document)
       })
       .catch((error) => {
@@ -138,7 +141,7 @@ const CreatePin = ({ user }) => {
 
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
-      {fields && <p className="text-red-500 mb-5 text-xl transition-all duration-150 ease-in">Please fill in all the fields.</p>}
+      {fields && <p className="text-red-500 mb-5 text-xl transition-all duration-150 ease-in">Please fill in all the fields. Or "Save the Image"</p>}
       <div className="flex lg:flex-row flex-col justify-center items-center bg-white xl:p-5 p-3 xl:w-4/5 w-full">
         <div className="p-3 flex flex-0.7 w-full">
           <div className="flex justify-center items-center flex-col  p-3 w-full h-420">
