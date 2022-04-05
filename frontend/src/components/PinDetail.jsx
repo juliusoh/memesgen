@@ -54,8 +54,8 @@ const PinDetail = ({ user }) => {
           setComment("");
           setAddingComment(false);
         });
-        window.location.reload();
         await fetchPinDetails();
+        window.location.reload();
     }
   };
 
@@ -75,9 +75,8 @@ const PinDetail = ({ user }) => {
           setComment("");
           setAddingComment(false);
         }).catch(error => console.log(error));
-
-      window.location.reload();
       await fetchPinDetails();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
