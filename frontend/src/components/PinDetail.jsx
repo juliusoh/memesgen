@@ -16,25 +16,24 @@ const PinDetail = ({ user }) => {
   const [comment, setComment] = useState("");
   const [addingComment, setAddingComment] = useState(false);
 
-  const fetchPinDetails = async() => {
+  const fetchPinDetails = async () => {
     const query = pinDetailQuery(pinId);
     try {
       if (query) {
         await client.fetch(`${query}`).then(async (data) => {
-           setPinDetail(data[0]);
-           console.log(data);
-           if (data[0]) {
-             const query1 = pinDetailMorePinQuery(data[0]);
-             await client.fetch(query1).then((res) => {
-               setPins(res);
-             });
-           }
-         });
-       }
+          setPinDetail(data[0]);
+          console.log(data);
+          if (data[0]) {
+            const query1 = pinDetailMorePinQuery(data[0]);
+            await client.fetch(query1).then((res) => {
+              setPins(res);
+            });
+          }
+        });
+      }
     } catch (error) {
-      console.log('error', error)
+      console.log("error", error);
     }
-
   };
 
   useEffect(() => {
@@ -54,8 +53,9 @@ const PinDetail = ({ user }) => {
           setComment("");
           setAddingComment(false);
         });
-        await fetchPinDetails();
-        window.location.reload();
+
+      await fetchPinDetails();
+      window.location.reload();
     }
   };
 
@@ -65,7 +65,7 @@ const PinDetail = ({ user }) => {
 
   const deleteComment = async (pinId, key, index) => {
     console.log("pinId", pinId);
-    console.log('commentkey', key)
+    console.log("commentkey", key);
     try {
       await client
         .patch(pinId)
@@ -74,7 +74,8 @@ const PinDetail = ({ user }) => {
         .then(() => {
           setComment("");
           setAddingComment(false);
-        }).catch(error => console.log(error));
+        })
+        .catch((error) => console.log(error));
       await fetchPinDetails();
       window.location.reload();
     } catch (error) {
