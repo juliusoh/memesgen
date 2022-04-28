@@ -54,7 +54,7 @@ const Login = () => {
           {/* <div className="p-3 bg-mainColor mb-2 ">
             <img src={logo} width="130px" alt="logo" />
           </div> */}
-          <p className="text-white font-bold mb-2">Stratus</p>
+          <p className="text-white font-bold mb-2">Powered by Anthos and SADA</p>
           <div className="shadow-2xl">
             <GoogleLogin
               clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
